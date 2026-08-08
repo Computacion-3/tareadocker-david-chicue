@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/routines/{{routineId}}"
+method: PUT
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: |-
+    {
+      "name": "Morning Routine Updated",
+      "description": "Updated full body workout",
+      "difficulty": "ADVANCED",
+      "userId": {{userId}},
+      "isPredesigned" : false
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Response is not null", function () {
+          pm.expect(pm.response.json()).to.not.be.null;
+      });
+      pm.test("Response has idRoutine", function () {
+          var d = pm.response.json();
+          pm.expect(d.idRoutine).to.not.be.null;
+          pm.expect(d.idRoutine).to.not.be.undefined;
+      });
+    language: text/javascript
+order: 5000

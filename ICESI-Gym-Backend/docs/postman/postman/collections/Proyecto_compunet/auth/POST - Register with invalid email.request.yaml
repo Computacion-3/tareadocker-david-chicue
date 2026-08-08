@@ -1,0 +1,35 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/auth/register"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"firstName\": \"Test\",\r
+
+    \  \"lastName\": \"User\",\r
+
+    \  \"institutionalEmail\": \"testuser@gmail.com\",\r
+
+    \  \"password\": \"password123\",\r
+
+    \  \"age\": 25\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 400 for invalid email domain\", function () {\r
+
+      \    pm.response.to.have.status(400);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response indicates validation error\", function () {\r
+
+      \    pm.expect(pm.response.json()).to.not.be.null;\r
+
+      });"
+    language: text/javascript
+order: 5000

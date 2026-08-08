@@ -1,0 +1,29 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/roles/{{testRoleId}}"
+method: PUT
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"TEST_ROLE_UPDATED\",\r
+
+    \  \"policyIds\": [1, 2, 3]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      pm.test(\"Name was updated\", function () {\r
+
+      \    pm.expect(pm.response.json().name).to.eql(\"TEST_ROLE_UPDATED\");\r
+
+      });"
+    language: text/javascript
+order: 8000

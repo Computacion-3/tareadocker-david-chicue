@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/roles/999999"
+method: PUT
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"TEST_ROLE_UPDATED\",\r
+
+    \  \"policyIds\": [1, 2, 3]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 404 for non-existent role\", function () {\r
+
+      \    pm.response.to.have.status(404);\r
+
+      });"
+    language: text/javascript
+order: 9000

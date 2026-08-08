@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proyectoFinal</a> &gt; <a href="index.source.html" class="el_package">edu.co.icesi.proyectofinal.services.impl</a> &gt; <span class="el_source">MessageServiceImpl.java</span></div><h1>MessageServiceImpl.java</h1><pre class="source lang-java linenums">package edu.co.icesi.proyectofinal.services.impl;
+
+import edu.co.icesi.proyectofinal.entity.Message;
+import edu.co.icesi.proyectofinal.repository.MessageRepository;
+import edu.co.icesi.proyectofinal.services.MessageService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class MessageServiceImpl implements MessageService {
+
+    private final MessageRepository messageRepository;
+
+<span class="fc" id="L15">    public MessageServiceImpl(MessageRepository messageRepository) {</span>
+<span class="fc" id="L16">        this.messageRepository = messageRepository;</span>
+<span class="fc" id="L17">    }</span>
+
+    @Override
+    public List&lt;Message&gt; getMessages() {
+<span class="fc" id="L21">        return messageRepository.findAll();</span>
+    }
+
+    @Override
+    public Message getMessageById(Integer id) {
+<span class="fc" id="L26">        return messageRepository.findById(id)</span>
+<span class="fc" id="L27">                .orElseThrow(() -&gt; new RuntimeException(&quot;Message with id &quot; + id + &quot; not found&quot;));</span>
+    }
+
+    @Override
+    public Message addMessage(Message message) {
+<span class="fc" id="L32">        return messageRepository.save(message);</span>
+    }
+
+    @Override
+    public Message updateMessage(Message message) {
+<span class="fc" id="L37">        Message existing = messageRepository.findById(message.getId())</span>
+<span class="fc" id="L38">                .orElseThrow(() -&gt; new RuntimeException(&quot;Message with id &quot; + message.getId() + &quot; not found&quot;));</span>
+<span class="fc" id="L39">        existing.setContent(message.getContent());</span>
+<span class="fc" id="L40">        existing.setSentAt(message.getSentAt());</span>
+<span class="fc" id="L41">        existing.setSender(message.getSender());</span>
+<span class="fc" id="L42">        existing.setReceiver(message.getReceiver());</span>
+<span class="fc" id="L43">        return messageRepository.save(existing);</span>
+    }
+
+    @Override
+    public Message deleteMessage(Integer id) {
+<span class="fc" id="L48">        Message message = messageRepository.findById(id)</span>
+<span class="fc" id="L49">                .orElseThrow(() -&gt; new RuntimeException(&quot;Message with id &quot; + id + &quot; not found&quot;));</span>
+<span class="fc" id="L50">        messageRepository.deleteById(id);</span>
+<span class="fc" id="L51">        return message;</span>
+    }
+
+    @Override
+    public List&lt;Message&gt; getBySenderId(Integer senderId) {
+<span class="fc" id="L56">        return messageRepository.findBySenderIdUser(senderId);</span>
+    }
+
+    @Override
+    public List&lt;Message&gt; getByReceiverId(Integer receiverId) {
+<span class="fc" id="L61">        return messageRepository.findByReceiverIdUser(receiverId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

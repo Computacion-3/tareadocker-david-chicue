@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proyectoFinal</a> &gt; <a href="index.source.html" class="el_package">edu.co.icesi.proyectofinal.services.impl</a> &gt; <span class="el_source">UserServiceImpl.java</span></div><h1>UserServiceImpl.java</h1><pre class="source lang-java linenums">package edu.co.icesi.proyectofinal.services.impl;
+
+import edu.co.icesi.proyectofinal.entity.UserRole;
+import edu.co.icesi.proyectofinal.entity.Role;
+import edu.co.icesi.proyectofinal.entity.User;
+import edu.co.icesi.proyectofinal.entity.keys.UserRoleId;
+import edu.co.icesi.proyectofinal.repository.RoleRepository;
+import edu.co.icesi.proyectofinal.repository.UserRepository;
+import edu.co.icesi.proyectofinal.services.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder encoder;
+
+<span class="fc" id="L22">    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder){</span>
+<span class="fc" id="L23">        this.userRepository = userRepository;</span>
+<span class="fc" id="L24">        this.roleRepository = roleRepository;</span>
+<span class="fc" id="L25">        this.encoder = encoder;</span>
+<span class="fc" id="L26">    }</span>
+
+    public User saveUser(User user){
+<span class="fc" id="L29">        String encodedPassword = encoder.encode(user.getPassword());</span>
+<span class="fc" id="L30">        user.setPassword(encodedPassword);</span>
+<span class="fc" id="L31">        return userRepository.save(user);</span>
+
+    }
+
+    public void deleteUserById(Integer userId){
+<span class="fc" id="L36">        userRepository.deleteById(userId);</span>
+<span class="fc" id="L37">    }</span>
+
+    public User getUserById(Integer idUser){
+<span class="fc" id="L40">        return userRepository.getUserByIdUser(idUser)</span>
+<span class="fc" id="L41">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L42">                        new RuntimeException(&quot;User with id &quot;+ idUser</span>
+                        + &quot; not found&quot;));
+    }
+
+    public List&lt;User&gt; getUsers(){
+<span class="fc" id="L47">        return userRepository.findAll();</span>
+    }
+
+    public List&lt;User&gt; getUsersByFirstNameIgnoreCase(String firstName){
+<span class="fc" id="L51">        return userRepository.findByFirstNameContainingIgnoreCase(firstName);</span>
+    }
+
+    public List&lt;User&gt; getUserByLastName(String lastName){
+<span class="fc" id="L55">        return userRepository.findByLastName(lastName);</span>
+    }
+
+    public User getUserByEmail(String email){
+<span class="fc" id="L59">        return userRepository.findByInstitutionalEmail(email)</span>
+<span class="fc" id="L60">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L61">                        new RuntimeException(&quot;User with email &quot; + email</span>
+                                + &quot; not found&quot;));
+    }
+
+    public User getByFirstAndLastName(String firstName, String lastName){
+
+<span class="fc" id="L67">        return userRepository.findByFirstNameAndLastName(firstName,lastName)</span>
+<span class="fc" id="L68">                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L69">                        new RuntimeException(&quot;User with first name &quot; + firstName</span>
+                        + &quot; and last name &quot; + lastName + &quot; not found&quot;));
+    }
+
+    public User updateUser(Integer userId, User updatedUser) {
+<span class="fc" id="L74">        User existing = userRepository.getUserByIdUser(userId)</span>
+<span class="fc" id="L75">                .orElseThrow(() -&gt; new RuntimeException(&quot;User with id &quot; + userId + &quot; not found&quot;));</span>
+
+<span class="fc" id="L77">        existing.setFirstName(updatedUser.getFirstName());</span>
+<span class="fc" id="L78">        existing.setLastName(updatedUser.getLastName());</span>
+<span class="fc" id="L79">        existing.setInstitutionalEmail(updatedUser.getInstitutionalEmail());</span>
+<span class="fc" id="L80">        existing.setPassword(updatedUser.getPassword());</span>
+
+
+
+<span class="fc" id="L84">        return userRepository.save(existing);</span>
+    }
+
+    public void updateUserRoles(Integer userId, List&lt;Long&gt; roleIds){
+
+<span class="nc" id="L89">        User user = userRepository.findById(userId).orElseThrow();</span>
+
+<span class="nc" id="L91">        user.getUserRoles().clear();</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if(roleIds != null){</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            for(Long roleId : roleIds){</span>
+
+<span class="nc" id="L96">                Role role = roleRepository.findById(roleId).orElseThrow();</span>
+
+<span class="nc" id="L98">                UserRoleId id = new UserRoleId();</span>
+<span class="nc" id="L99">                id.setRoleId(role.getId());</span>
+<span class="nc" id="L100">                id.setUserId(user.getIdUser());</span>
+
+<span class="nc" id="L102">                UserRole ur = new UserRole();</span>
+<span class="nc" id="L103">                ur.setId(id);</span>
+<span class="nc" id="L104">                ur.setUser(user);</span>
+<span class="nc" id="L105">                ur.setRole(role);</span>
+
+<span class="nc" id="L107">                user.getUserRoles().add(ur);</span>
+<span class="nc" id="L108">            }</span>
+        }
+
+<span class="nc" id="L111">        userRepository.save(user);</span>
+<span class="nc" id="L112">    }</span>
+
+    @Override
+    public List&lt;Role&gt; getAllRoles(){
+<span class="nc" id="L116">        return roleRepository.findAll();</span>
+    }
+
+    @Override
+    public void updateUserProfile(String email, User updated){
+
+<span class="nc" id="L122">        User user = getUserByEmail(email);</span>
+
+<span class="nc" id="L124">        user.setFirstName(updated.getFirstName());</span>
+<span class="nc" id="L125">        user.setLastName(updated.getLastName());</span>
+<span class="nc" id="L126">        user.setAge(updated.getAge());</span>
+
+<span class="nc" id="L128">        userRepository.save(user);</span>
+<span class="nc" id="L129">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

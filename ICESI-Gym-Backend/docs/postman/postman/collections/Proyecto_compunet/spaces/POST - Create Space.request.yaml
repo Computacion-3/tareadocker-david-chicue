@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/spaces"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: |-
+    {
+      "name": "Yoga Room",
+      "capacity": 20,
+      "description": "Room for yoga classes"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+      pm.test("Response is not null", function () {
+          pm.expect(pm.response.json()).to.not.be.null;
+      });
+      pm.test("Response has idSpace", function () {
+          var d = pm.response.json();
+          pm.expect(d.idSpace).to.not.be.null;
+          pm.expect(d.idSpace).to.not.be.undefined;
+      });
+      var d = pm.response.json();
+      if (d.idSpace) { pm.environment.set("spaceId", d.idSpace); }
+    language: text/javascript
+order: 1000

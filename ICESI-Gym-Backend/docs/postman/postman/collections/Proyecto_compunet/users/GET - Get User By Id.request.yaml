@@ -1,0 +1,44 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/users/{{userId}}"
+method: GET
+headers:
+  Authorization: Bearer {{token}}
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response is not null\", function () {\r
+
+      \    pm.expect(pm.response.json()).to.not.be.null;\r
+
+      });\r
+
+      \r
+
+      pm.test(\"User has id field\", function () {\r
+
+      \    var jsonData = pm.response.json();\r
+
+      \    pm.expect(jsonData.idUser).to.not.be.null;\r
+
+      \    pm.expect(jsonData.idUser).to.not.be.undefined;\r
+
+      });\r
+
+      \r
+
+      pm.test(\"User has institutionalEmail field\", function () {\r
+
+      \    var jsonData = pm.response.json();\r
+
+      \    pm.expect(jsonData.institutionalEmail).to.be.a('string');\r
+
+      });"
+    language: text/javascript
+order: 2000

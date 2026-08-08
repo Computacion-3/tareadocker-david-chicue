@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/schedules/999999"
+method: PUT
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: |-
+    {
+      "dayOfWeek": "TUESDAY",
+      "startTime": "10:00:00",
+      "endTime": "11:00:00"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status 404 for non-existent resource", function () {
+          pm.response.to.have.status(404);
+      });
+      pm.test("Error message mentions not found", function () {
+          pm.expect(pm.response.json().message).to.include("not found");
+      });
+    language: text/javascript
+order: 6000

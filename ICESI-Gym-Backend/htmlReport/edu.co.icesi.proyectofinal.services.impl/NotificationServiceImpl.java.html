@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotificationServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proyectoFinal</a> &gt; <a href="index.source.html" class="el_package">edu.co.icesi.proyectofinal.services.impl</a> &gt; <span class="el_source">NotificationServiceImpl.java</span></div><h1>NotificationServiceImpl.java</h1><pre class="source lang-java linenums">package edu.co.icesi.proyectofinal.services.impl;
+
+import edu.co.icesi.proyectofinal.entity.Notification;
+import edu.co.icesi.proyectofinal.repository.NotificationRepository;
+import edu.co.icesi.proyectofinal.services.NotificationService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class NotificationServiceImpl implements NotificationService {
+
+    private final NotificationRepository notificationRepository;
+
+<span class="fc" id="L15">    public NotificationServiceImpl(NotificationRepository notificationRepository) {</span>
+<span class="fc" id="L16">        this.notificationRepository = notificationRepository;</span>
+<span class="fc" id="L17">    }</span>
+
+    @Override
+    public List&lt;Notification&gt; getNotifications() {
+<span class="fc" id="L21">        return notificationRepository.findAll();</span>
+    }
+
+    @Override
+    public Notification getNotification(Integer id) {
+<span class="fc" id="L26">        return notificationRepository.findById(id)</span>
+<span class="fc" id="L27">                .orElseThrow(() -&gt; new RuntimeException(&quot;Notification with id &quot; + id + &quot; not found&quot;));</span>
+    }
+
+    @Override
+    public Notification saveNotification(Notification notification) {
+<span class="fc" id="L32">        return notificationRepository.save(notification);</span>
+    }
+
+    @Override
+    public Notification updateNotification(Notification notification) {
+<span class="fc" id="L37">        Notification existing = notificationRepository.findById(notification.getIdNotification())</span>
+<span class="fc" id="L38">                .orElseThrow(() -&gt; new RuntimeException(&quot;Notification with id &quot; + notification.getIdNotification() + &quot; not found&quot;));</span>
+<span class="fc" id="L39">        existing.setType(notification.getType());</span>
+<span class="fc" id="L40">        existing.setMessage(notification.getMessage());</span>
+<span class="fc" id="L41">        existing.setReferenceId(notification.getReferenceId());</span>
+<span class="fc" id="L42">        existing.setReferenceType(notification.getReferenceType());</span>
+<span class="fc" id="L43">        existing.setDateSent(notification.getDateSent());</span>
+<span class="fc" id="L44">        existing.setRead(notification.isRead());</span>
+<span class="fc" id="L45">        return notificationRepository.save(existing);</span>
+    }
+
+    @Override
+    public void deleteNotification(Integer id) {
+<span class="fc" id="L50">        notificationRepository.deleteById(id);</span>
+<span class="fc" id="L51">    }</span>
+
+    @Override
+    public List&lt;Notification&gt; getByUserId(Integer userId) {
+<span class="fc" id="L55">        return notificationRepository.findByUserTargetIdUser(userId);</span>
+    }
+
+    @Override
+    public List&lt;Notification&gt; getUnreadByUserId(Integer userId) {
+<span class="fc" id="L60">        return notificationRepository.findByUserTargetIdUserAndIsReadFalse(userId);</span>
+    }
+
+    @Override
+    public void markAsRead(Integer id) {
+<span class="fc" id="L65">        Notification notification = notificationRepository.findById(id)</span>
+<span class="fc" id="L66">                .orElseThrow(() -&gt; new RuntimeException(&quot;Notification with id &quot; + id + &quot; not found&quot;));</span>
+<span class="fc" id="L67">        notification.setRead(true);</span>
+<span class="fc" id="L68">        notificationRepository.save(notification);</span>
+<span class="fc" id="L69">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

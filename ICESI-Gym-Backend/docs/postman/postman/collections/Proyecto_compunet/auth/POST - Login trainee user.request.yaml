@@ -1,0 +1,45 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/auth/login"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"username\": \"juan.perez@icesi.edu.co\",\r
+
+    \    \"password\": \"pass123\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response has token\", function () {\r
+
+      \    var jsonData = pm.response.json();\r
+
+      \    pm.expect(jsonData.token).to.not.be.null;\r
+
+      \    pm.expect(jsonData.token).to.not.be.undefined;\r
+
+      \    pm.expect(jsonData.token).to.be.a('string');\r
+
+      });\r
+
+      \r
+
+      var jsonData = pm.response.json();\r
+
+      if (jsonData.token) {\r
+
+      \    pm.environment.set(\"basicToken\", jsonData.token);\r
+
+      }"
+    language: text/javascript
+order: 1000

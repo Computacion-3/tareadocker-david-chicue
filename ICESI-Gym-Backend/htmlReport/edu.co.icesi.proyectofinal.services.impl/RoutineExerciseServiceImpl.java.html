@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoutineExerciseServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proyectoFinal</a> &gt; <a href="index.source.html" class="el_package">edu.co.icesi.proyectofinal.services.impl</a> &gt; <span class="el_source">RoutineExerciseServiceImpl.java</span></div><h1>RoutineExerciseServiceImpl.java</h1><pre class="source lang-java linenums">package edu.co.icesi.proyectofinal.services.impl;
+
+import edu.co.icesi.proyectofinal.entity.RoutineExercise;
+import edu.co.icesi.proyectofinal.entity.keys.RoutineExerciseId;
+import edu.co.icesi.proyectofinal.repository.RoutineExerciseRepository;
+import edu.co.icesi.proyectofinal.services.RoutineExerciseService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class RoutineExerciseServiceImpl implements RoutineExerciseService {
+
+    private final RoutineExerciseRepository routineExerciseRepository;
+
+<span class="fc" id="L16">    public RoutineExerciseServiceImpl(RoutineExerciseRepository routineExerciseRepository) {</span>
+<span class="fc" id="L17">        this.routineExerciseRepository = routineExerciseRepository;</span>
+<span class="fc" id="L18">    }</span>
+
+    @Override
+    public RoutineExercise save(RoutineExercise routineExercise) {
+<span class="fc" id="L22">        return routineExerciseRepository.save(routineExercise);</span>
+    }
+
+    @Override
+    public void deleteById(RoutineExerciseId id) {
+<span class="fc" id="L27">        routineExerciseRepository.deleteById(id);</span>
+<span class="fc" id="L28">    }</span>
+
+    @Override
+    public RoutineExercise getById(RoutineExerciseId id) {
+<span class="fc" id="L32">        return routineExerciseRepository.findById(id)</span>
+<span class="fc" id="L33">                .orElseThrow(() -&gt; new RuntimeException(</span>
+<span class="fc" id="L34">                        &quot;RoutineExercise with routineId &quot; + id.getRoutineId()</span>
+<span class="fc" id="L35">                                + &quot; and exerciseId &quot; + id.getExerciseId() + &quot; not found&quot;));</span>
+    }
+
+    @Override
+    public List&lt;RoutineExercise&gt; findAll() {
+<span class="fc" id="L40">        return routineExerciseRepository.findAll();</span>
+    }
+
+    @Override
+    public List&lt;RoutineExercise&gt; getByRoutineId(Integer routineId) {
+<span class="fc" id="L45">        return routineExerciseRepository.findByRoutineIdRoutine(routineId);</span>
+    }
+
+    @Override
+    public List&lt;RoutineExercise&gt; getByExerciseId(Integer exerciseId) {
+<span class="fc" id="L50">        return routineExerciseRepository.findByExerciseIdExercise(exerciseId);</span>
+    }
+
+    @Override
+    public RoutineExercise update(RoutineExerciseId id, RoutineExercise updated) {
+<span class="fc" id="L55">        RoutineExercise existing = routineExerciseRepository.findById(id)</span>
+<span class="fc" id="L56">                .orElseThrow(() -&gt; new RuntimeException(</span>
+<span class="fc" id="L57">                        &quot;RoutineExercise with routineId &quot; + id.getRoutineId()</span>
+<span class="fc" id="L58">                                + &quot; and exerciseId &quot; + id.getExerciseId() + &quot; not found&quot;));</span>
+<span class="fc" id="L59">        existing.setSets(updated.getSets());</span>
+<span class="fc" id="L60">        existing.setTargetReps(updated.getTargetReps());</span>
+<span class="fc" id="L61">        existing.setExerciseOrder(updated.getExerciseOrder());</span>
+<span class="fc" id="L62">        return routineExerciseRepository.save(existing);</span>
+    }
+
+    @Override
+    public long countByRoutineId(Integer routineId) {
+<span class="fc" id="L67">        return routineExerciseRepository.countByRoutineIdRoutine(routineId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

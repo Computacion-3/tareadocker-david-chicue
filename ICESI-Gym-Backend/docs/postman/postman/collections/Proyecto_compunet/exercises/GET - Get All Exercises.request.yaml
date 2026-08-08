@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/exercises"
+method: GET
+headers:
+  Authorization: Bearer {{token}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Response is an array", function () {
+          pm.expect(pm.response.json()).to.be.an('array');
+      });
+      pm.test("Response is not null", function () {
+          pm.expect(pm.response.json()).to.not.be.null;
+      });
+      var d = pm.response.json();
+      if (d.length > 0) { pm.environment.set("exerciseId", d[0].idExercise); }
+    language: text/javascript
+order: 1000

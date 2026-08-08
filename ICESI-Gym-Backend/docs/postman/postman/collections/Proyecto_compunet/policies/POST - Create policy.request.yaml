@@ -1,0 +1,37 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/policies"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"TEST_POLICY\",\r
+
+    \  \"description\": \"Policy for testing\",\r
+
+    \  \"resource\": \"TESTS\",\r
+
+    \  \"action\": \"READ\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 201\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      pm.test(\"Policy has id\", function () {\r
+
+      \    var json = pm.response.json();\r
+
+      \    pm.expect(json.id).to.not.be.undefined;\r
+
+      \    pm.environment.set(\"testPolicyId\", json.id);\r
+
+      });"
+    language: text/javascript
+order: 1000

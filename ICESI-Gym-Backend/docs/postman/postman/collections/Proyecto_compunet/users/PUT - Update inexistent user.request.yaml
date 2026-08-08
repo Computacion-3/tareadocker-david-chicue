@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/users/999999"
+method: PUT
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"firstName\": \"Updated\",\r
+
+    \  \"lastName\": \"User\",\r
+
+    \  \"institutionalEmail\": \"{{testEmail}}\",\r
+
+    \  \"age\": 30\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 404 for non-existent user\", function () {\r
+
+      \    pm.response.to.have.status(404);\r
+
+      });"
+    language: text/javascript
+order: 5000

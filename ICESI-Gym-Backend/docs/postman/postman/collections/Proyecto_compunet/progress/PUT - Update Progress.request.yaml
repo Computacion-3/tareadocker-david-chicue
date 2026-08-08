@@ -1,0 +1,35 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/progress/{{progressId}}"
+method: PUT
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: |
+    {
+      "userId": {{userId}},
+      "routineId":{{routineId}},
+      "exerciseId": {{exerciseId}},
+      "reps": 24,
+      "durationMin": 60,
+      "effortLevel": 4,
+      "setNumber": 2,
+      "weightKg": 60
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Response is not null", function () {
+          pm.expect(pm.response.json()).to.not.be.null;
+      });
+
+      pm.test("Response has idProgress", function () {
+          var d = pm.response.json();
+          pm.expect(d.idProgress).to.not.be.null;
+          pm.expect(d.idProgress).to.not.be.undefined;
+      });
+    language: text/javascript
+order: 5000

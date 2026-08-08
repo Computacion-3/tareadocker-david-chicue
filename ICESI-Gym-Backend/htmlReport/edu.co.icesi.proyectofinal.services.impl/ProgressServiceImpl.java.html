@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProgressServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proyectoFinal</a> &gt; <a href="index.source.html" class="el_package">edu.co.icesi.proyectofinal.services.impl</a> &gt; <span class="el_source">ProgressServiceImpl.java</span></div><h1>ProgressServiceImpl.java</h1><pre class="source lang-java linenums">package edu.co.icesi.proyectofinal.services.impl;
+
+import edu.co.icesi.proyectofinal.entity.Progress;
+import edu.co.icesi.proyectofinal.repository.ProgressRepository;
+import edu.co.icesi.proyectofinal.services.ProgressService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ProgressServiceImpl implements ProgressService {
+
+    private final ProgressRepository progressRepository;
+
+<span class="fc" id="L15">    public ProgressServiceImpl(ProgressRepository progressRepository) {</span>
+<span class="fc" id="L16">        this.progressRepository = progressRepository;</span>
+<span class="fc" id="L17">    }</span>
+
+    @Override
+    public List&lt;Progress&gt; getProgress() {
+<span class="fc" id="L21">        return progressRepository.findAll();</span>
+    }
+
+    @Override
+    public Progress getProgress(Integer id) {
+<span class="fc" id="L26">        return progressRepository.findById(id)</span>
+<span class="fc" id="L27">                .orElseThrow(() -&gt; new RuntimeException(&quot;Progress with id &quot; + id + &quot; not found&quot;));</span>
+    }
+
+    @Override
+    public Progress createProgress(Progress progress) {
+<span class="fc" id="L32">        return progressRepository.save(progress);</span>
+    }
+
+    @Override
+    public Progress updateProgress(Progress progress) {
+<span class="fc" id="L37">        Progress existing = progressRepository.findById(progress.getIdProgress())</span>
+<span class="fc" id="L38">                .orElseThrow(() -&gt; new RuntimeException(&quot;Progress with id &quot; + progress.getIdProgress() + &quot; not found&quot;));</span>
+<span class="fc" id="L39">        existing.setDateLogged(progress.getDateLogged());</span>
+<span class="fc" id="L40">        existing.setReps(progress.getReps());</span>
+<span class="fc" id="L41">        existing.setDurationMin(progress.getDurationMin());</span>
+<span class="fc" id="L42">        existing.setEffortLevel(progress.getEffortLevel());</span>
+<span class="fc" id="L43">        existing.setSetNumber(progress.getSetNumber());</span>
+<span class="fc" id="L44">        existing.setWeightKg(progress.getWeightKg());</span>
+<span class="fc" id="L45">        existing.setExercise(progress.getExercise());</span>
+<span class="fc" id="L46">        existing.setRoutine(progress.getRoutine());</span>
+<span class="fc" id="L47">        return progressRepository.save(existing);</span>
+    }
+
+    @Override
+    public void deleteProgress(Integer id) {
+<span class="fc" id="L52">        progressRepository.deleteById(id);</span>
+<span class="fc" id="L53">    }</span>
+
+    @Override
+    public List&lt;Progress&gt; getByUserId(Integer userId) {
+<span class="fc" id="L57">        return progressRepository.findByUserProgressIdUser(userId);</span>
+    }
+
+    @Override
+    public List&lt;Progress&gt; getByRoutineId(Integer routineId) {
+<span class="fc" id="L62">        return progressRepository.findByRoutineIdRoutine(routineId);</span>
+    }
+
+    @Override
+    public List&lt;Progress&gt; getByExerciseId(Integer exerciseId) {
+<span class="fc" id="L67">        return progressRepository.findByExerciseIdExercise(exerciseId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

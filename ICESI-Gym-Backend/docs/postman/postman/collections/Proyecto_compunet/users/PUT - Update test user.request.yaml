@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/users/{{testUserId}}"
+method: PUT
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"firstName\": \"Updated\",\r
+
+    \  \"lastName\": \"User\",\r
+
+    \  \"institutionalEmail\": \"{{testEmail}}\",\r
+
+    \  \"age\": 30\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      pm.test(\"Updated firstName matches\", function () {\r
+
+      \    pm.expect(pm.response.json().firstName).to.eql(\"Updated\");\r
+
+      });"
+    language: text/javascript
+order: 4000

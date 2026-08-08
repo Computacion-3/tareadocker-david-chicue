@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/messages"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: |-
+    {
+      "content": "Hello, this is a test message",
+      "senderId": {{userId}},
+      "receiverId": {{userId}}
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+      pm.test("Response is not null", function () {
+          pm.expect(pm.response.json()).to.not.be.null;
+      });
+      pm.test("Response has id", function () {
+          var d = pm.response.json();
+          pm.expect(d.id).to.not.be.null;
+          pm.expect(d.id).to.not.be.undefined;
+      });
+      var d = pm.response.json();
+      if (d.id) { pm.environment.set("messageId", d.id); }
+    language: text/javascript
+order: 1000

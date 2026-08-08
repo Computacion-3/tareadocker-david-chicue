@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/roles"
+method: POST
+headers:
+  Authorization: Bearer {{basicToken}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"TEST_ROLE\",\r
+
+    \  \"policyIds\": [1, 2]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 403\", function () {\r
+
+      \    pm.response.to.have.status(403);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Access Denied\", function () {\r
+
+      \    pm.expect(pm.response.text()).to.include(\"Access Denied\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 2000

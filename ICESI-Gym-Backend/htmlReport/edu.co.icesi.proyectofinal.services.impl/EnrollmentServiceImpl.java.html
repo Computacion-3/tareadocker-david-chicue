@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnrollmentServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proyectoFinal</a> &gt; <a href="index.source.html" class="el_package">edu.co.icesi.proyectofinal.services.impl</a> &gt; <span class="el_source">EnrollmentServiceImpl.java</span></div><h1>EnrollmentServiceImpl.java</h1><pre class="source lang-java linenums">package edu.co.icesi.proyectofinal.services.impl;
+
+import edu.co.icesi.proyectofinal.entity.Enrollment;
+import edu.co.icesi.proyectofinal.entity.keys.EnrollmentId;
+import edu.co.icesi.proyectofinal.repository.EnrollmentRepository;
+import edu.co.icesi.proyectofinal.services.EnrollmentService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class EnrollmentServiceImpl implements EnrollmentService {
+
+    private final EnrollmentRepository enrollmentRepository;
+
+<span class="fc" id="L16">    public EnrollmentServiceImpl(EnrollmentRepository enrollmentRepository) {</span>
+<span class="fc" id="L17">        this.enrollmentRepository = enrollmentRepository;</span>
+<span class="fc" id="L18">    }</span>
+
+    @Override
+    public Enrollment save(Enrollment enrollment) {
+<span class="fc" id="L22">        return enrollmentRepository.save(enrollment);</span>
+    }
+
+    @Override
+    public void deleteById(EnrollmentId id) {
+<span class="fc" id="L27">        enrollmentRepository.deleteById(id);</span>
+<span class="fc" id="L28">    }</span>
+
+    @Override
+    public Enrollment getById(EnrollmentId id) {
+<span class="fc" id="L32">        return enrollmentRepository.findById(id)</span>
+<span class="fc" id="L33">                .orElseThrow(() -&gt; new RuntimeException(&quot;Enrollment not found&quot;));</span>
+    }
+
+    @Override
+    public List&lt;Enrollment&gt; findAll() {
+<span class="fc" id="L38">        return enrollmentRepository.findAll();</span>
+    }
+
+    @Override
+    public List&lt;Enrollment&gt; getByUserId(Integer userId) {
+<span class="fc" id="L43">        return enrollmentRepository.findByUserIdUser(userId);</span>
+    }
+
+    @Override
+    public List&lt;Enrollment&gt; getByActivityId(Integer activityId) {
+<span class="fc" id="L48">        return enrollmentRepository.findByActivityIdActivity(activityId);</span>
+    }
+
+    @Override
+    public List&lt;Enrollment&gt; getByActivityName(String activityName) {
+<span class="fc" id="L53">        return enrollmentRepository.findByActivityName(activityName);</span>
+    }
+
+    @Override
+    public Enrollment update(EnrollmentId id, Enrollment updated) {
+<span class="fc" id="L58">        Enrollment existing = enrollmentRepository.findById(id)</span>
+<span class="fc" id="L59">                .orElseThrow(() -&gt; new RuntimeException(&quot;Enrollment not found&quot;));</span>
+<span class="fc" id="L60">        existing.setEnrollmentDate(updated.getEnrollmentDate());</span>
+<span class="fc" id="L61">        existing.setUser(updated.getUser());</span>
+<span class="fc" id="L62">        existing.setActivity(updated.getActivity());</span>
+<span class="fc" id="L63">        return enrollmentRepository.save(existing);</span>
+    }
+
+    @Override
+    public long countByActivityId(Integer activityId) {
+<span class="fc" id="L68">        return enrollmentRepository.countByActivityIdActivity(activityId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

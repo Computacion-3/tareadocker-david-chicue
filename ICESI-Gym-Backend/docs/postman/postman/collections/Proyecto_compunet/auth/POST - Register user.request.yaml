@@ -1,0 +1,66 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/auth/register"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"firstName\": \"Test\",\r
+
+    \  \"lastName\": \"User\",\r
+
+    \  \"institutionalEmail\": \"{{testEmail}}\",\r
+
+    \  \"password\": \"password123\",\r
+
+    \  \"age\": 25\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 201\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Created user is not null\", function () {\r
+
+      \    pm.expect(pm.response.json()).to.not.be.null;\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Created user has id\", function () {\r
+
+      \    var jsonData = pm.response.json();\r
+
+      \    pm.expect(jsonData.idUser).to.not.be.null;\r
+
+      \    pm.expect(jsonData.idUser).to.not.be.undefined;\r
+
+      });\r
+
+      \r
+
+      var jsonData = pm.response.json();\r
+
+      if (jsonData.idUser) {\r
+
+      \    pm.environment.set(\"testUserId\", jsonData.idUser);\r
+
+      }"
+    language: text/javascript
+  - type: beforeRequest
+    code: "//generate unique email with timestamp\r
+
+      const timestamp = Date.now();\r
+
+      const email = `testuser${timestamp}@icesi.edu.co`;\r
+
+      pm.environment.set(\"testEmail\", email);\r\n"
+    language: text/javascript
+order: 4000

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proyectoFinal</a> &gt; <a href="index.source.html" class="el_package">edu.co.icesi.proyectofinal.controller</a> &gt; <span class="el_source">AuthController.java</span></div><h1>AuthController.java</h1><pre class="source lang-java linenums">package edu.co.icesi.proyectofinal.controller;
+
+
+import edu.co.icesi.proyectofinal.entity.User;
+import edu.co.icesi.proyectofinal.services.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class AuthController {
+
+    private final UserService userService;
+
+<span class="fc" id="L20">    public AuthController(UserService userService) {</span>
+<span class="fc" id="L21">        this.userService = userService;</span>
+<span class="fc" id="L22">    }</span>
+
+    @GetMapping(&quot;/login&quot;)
+    public String loginForm(Model model){
+<span class="nc" id="L26">        return &quot;auth/login&quot;;</span>
+    }
+
+    @GetMapping(&quot;/logout-confirm&quot;)
+    public String logoutConfirm() {
+<span class="nc" id="L31">        return &quot;auth/logout&quot;;</span>
+    }
+
+    @GetMapping(&quot;/logout-success&quot;)
+    public String logoutSuccess() {
+<span class="nc" id="L36">        return &quot;auth/logout-success&quot;;</span>
+    }
+
+    @GetMapping(&quot;/home&quot;)
+    public String showHome(Model model, @AuthenticationPrincipal UserDetails userDetails){
+
+<span class="nc" id="L42">        User user = userService.getUserByEmail(userDetails.getUsername());</span>
+<span class="nc" id="L43">        model.addAttribute(&quot;user&quot;, user);</span>
+<span class="nc" id="L44">        return &quot;home&quot;;}</span>
+
+    @GetMapping(&quot;/register&quot;)
+    public String showRegisterForm(Model model){
+<span class="nc" id="L48">        model.addAttribute(&quot;newUser&quot;, new User());</span>
+<span class="nc" id="L49">        return &quot;auth/register&quot;;</span>
+    }
+
+    @PostMapping(&quot;/register&quot;)
+    public String registerUser(@ModelAttribute(&quot;newUser&quot;) User user){
+
+<span class="nc" id="L55">        userService.saveUser(user);</span>
+
+<span class="nc" id="L57">        return &quot;redirect:/login?success&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

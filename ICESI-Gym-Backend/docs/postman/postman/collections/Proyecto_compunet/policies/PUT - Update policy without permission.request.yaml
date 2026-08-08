@@ -1,0 +1,35 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/policies/{{testPolicyId}}"
+method: PUT
+headers:
+  Authorization: Bearer {{basicToken}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"TEST_POLICY_UPDATED\",\r
+
+    \  \"description\": \"Updated policy for testing\",\r
+
+    \  \"resource\": \"TESTS\",\r
+
+    \  \"action\": \"CREATE\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 403\", function () {\r
+
+      \    pm.response.to.have.status(403);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Access Denied\", function () {\r
+
+      \    pm.expect(pm.response.text()).to.include(\"Access Denied\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 11000

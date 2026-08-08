@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/recommendations"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: |
+    {
+      "description": "Increase water intake",
+      "userId": {{userId}},
+      "trainerId": {{trainerId}}
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+      pm.test("Response is not null", function () {
+          pm.expect(pm.response.json()).to.not.be.null;
+      });
+      pm.test("Response has idRecommendation", function () {
+          var d = pm.response.json();
+          pm.expect(d.idRecommendation).to.not.be.null;
+          pm.expect(d.idRecommendation).to.not.be.undefined;
+      });
+      var d = pm.response.json();
+      if (d.idRecommendation) { pm.environment.set("recommedationId", d.idRecommendation); }
+    language: text/javascript
+order: 1000

@@ -1,0 +1,32 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/exercises/{{exerciseId}}"
+method: PUT
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: |-
+    {
+      "name": "Push Up Advanced",
+      "description": "Advanced upper body exercise",
+      "type": "strenght",
+      "difficulty": "BEGINNER",
+      "durationMin": 5,
+      "isPredefined": true
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Response is not null", function () {
+          pm.expect(pm.response.json()).to.not.be.null;
+      });
+      pm.test("Response has idExercise", function () {
+          var d = pm.response.json();
+          pm.expect(d.idExercise).to.not.be.null;
+          pm.expect(d.idExercise).to.not.be.undefined;
+      });
+    language: text/javascript
+order: 5000

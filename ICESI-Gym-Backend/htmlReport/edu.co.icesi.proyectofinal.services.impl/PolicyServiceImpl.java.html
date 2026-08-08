@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PolicyServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proyectoFinal</a> &gt; <a href="index.source.html" class="el_package">edu.co.icesi.proyectofinal.services.impl</a> &gt; <span class="el_source">PolicyServiceImpl.java</span></div><h1>PolicyServiceImpl.java</h1><pre class="source lang-java linenums">package edu.co.icesi.proyectofinal.services.impl;
+
+import edu.co.icesi.proyectofinal.entity.Policy;
+import edu.co.icesi.proyectofinal.repository.PolicyRepository;
+import edu.co.icesi.proyectofinal.services.PolicyService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class PolicyServiceImpl implements PolicyService {
+
+    private final PolicyRepository policyRepository;
+
+<span class="fc" id="L15">    public PolicyServiceImpl(PolicyRepository policyRepository){</span>
+<span class="fc" id="L16">        this.policyRepository = policyRepository;</span>
+<span class="fc" id="L17">    }</span>
+
+
+    public Policy savePolicy(Policy policy){
+<span class="fc" id="L21">        return policyRepository.save(policy);</span>
+    }
+
+    public void deletePolicyById(Long idPolicy){
+<span class="fc" id="L25">        policyRepository.deleteById(idPolicy);</span>
+
+<span class="fc" id="L27">    }</span>
+
+    public Policy getPolicyById(Long idPolicy){
+<span class="fc" id="L30">        return policyRepository.getPolicyById(idPolicy)</span>
+<span class="fc" id="L31">                .orElseThrow(() -&gt; new RuntimeException(&quot;Policy with id &quot; + idPolicy + &quot; not found&quot;));</span>
+    }
+
+    public List&lt;Policy&gt; getPolicies(){
+<span class="fc" id="L35">        return policyRepository.findAll();</span>
+
+    }
+
+
+    public List&lt;Policy&gt; getPoliciesByRoleName(String roleName){
+<span class="fc" id="L41">        return policyRepository.getPoliciesByRolePolicies_Role_Name(roleName);</span>
+
+    }
+
+    public Policy updatePolicy(Long idPolicy, Policy updatedPolicy) {
+<span class="fc" id="L46">        Policy existing = policyRepository.getPolicyById(idPolicy)</span>
+<span class="fc" id="L47">                .orElseThrow(() -&gt; new RuntimeException(&quot;Policy with id &quot; + idPolicy + &quot; not found&quot;));</span>
+
+<span class="fc" id="L49">        existing.setName(updatedPolicy.getName());</span>
+<span class="fc" id="L50">        existing.setDescription(updatedPolicy.getDescription());</span>
+<span class="fc" id="L51">        existing.setResource(updatedPolicy.getResource());</span>
+<span class="fc" id="L52">        existing.setAction(updatedPolicy.getAction());</span>
+<span class="fc" id="L53">        existing.setRolePolicies(updatedPolicy.getRolePolicies());</span>
+
+<span class="fc" id="L55">        return policyRepository.save(existing);</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

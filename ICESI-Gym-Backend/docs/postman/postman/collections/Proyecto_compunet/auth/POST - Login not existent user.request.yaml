@@ -1,0 +1,41 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/auth/login"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"username\": \"notexistent@icesi.edu.co\",\r
+
+    \    \"password\": \"123456\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 401\", function () {\r
+
+      \    pm.response.to.have.status(401);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response has message field\", function () {\r
+
+      \    const jsonData = pm.response.json();\r
+
+      \    pm.expect(jsonData).to.have.property(\"message\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Message indicates authentication failed\", function () {\r
+
+      \    const jsonData = pm.response.json();\r
+
+      \    pm.expect(jsonData.message).to.include(\"Authentication Failed\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 3000

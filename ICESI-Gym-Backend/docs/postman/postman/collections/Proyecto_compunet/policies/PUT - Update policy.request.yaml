@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/policies/{{testPolicyId}}"
+method: PUT
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"TEST_POLICY_UPDATED\",\r
+
+    \  \"description\": \"Updated policy for testing\",\r
+
+    \  \"resource\": \"TESTS\",\r
+
+    \  \"action\": \"CREATE\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      pm.test(\"Action was updated\", function () {\r
+
+      \    pm.expect(pm.response.json().action).to.eql(\"CREATE\");\r
+
+      });"
+    language: text/javascript
+order: 9000

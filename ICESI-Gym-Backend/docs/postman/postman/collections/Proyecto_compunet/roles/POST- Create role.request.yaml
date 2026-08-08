@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/roles"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"TEST_ROLE\",\r
+
+    \  \"policyIds\": [1, 2]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 201\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      pm.test(\"Role has id\", function () {\r
+
+      \    var json = pm.response.json();\r
+
+      \    pm.expect(json.id).to.not.be.undefined;\r
+
+      \    pm.environment.set(\"testRoleId\", json.id);\r
+
+      });"
+    language: text/javascript
+order: 1000

@@ -1,0 +1,32 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/schedules"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: |
+    {
+      "activityId": {{activityId}},
+      "dayOfWeek": "MONDAY",
+      "startTime": "08:00:00",
+      "endTime": "09:00:00"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+      pm.test("Response is not null", function () {
+          pm.expect(pm.response.json()).to.not.be.null;
+      });
+      pm.test("Response has idSchedule", function () {
+          var d = pm.response.json();
+          pm.expect(d.idSchedule).to.not.be.null;
+          pm.expect(d.idSchedule).to.not.be.undefined;
+      });
+      var d = pm.response.json();
+      if (d.idSchedule) { pm.environment.set("scheduleId", d.idSchedule); }
+    language: text/javascript
+order: 1000

@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/roles/{{testRoleId}}"
+method: GET
+headers:
+  Authorization: Bearer {{token}}
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      pm.test(\"Role name is TEST_ROLE\", function () {\r
+
+      \    pm.expect(pm.response.json().name).to.eql(\"TEST_ROLE\");\r
+
+      });"
+    language: text/javascript
+order: 6000

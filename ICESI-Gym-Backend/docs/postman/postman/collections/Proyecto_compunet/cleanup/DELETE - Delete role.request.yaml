@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/roles/{{testRoleId}}"
+method: DELETE
+headers:
+  Authorization: Bearer {{token}}
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 204 on delete\", function () {\r
+
+      \    pm.response.to.have.status(204);\r
+
+      });\r
+
+      pm.environment.unset(\"testRoleId\");"
+    language: text/javascript
+order: 6000

@@ -1,7 +1,36 @@
-Migración de Back y Front a Deployment local con Docker y Docker Compose
+# ICESI Gym - Docker Compose
 
+Aplicación web desarrollada con Spring Boot, React y PostgreSQL,
+contenedorizada mediante Docker y orquestada con Docker Compose.
 
-1. Ejecución:
+## Arquitectura
 
-En la terminal de la ruta base ejecutar `docker compose up --build` y esperar a que carge.
-Para acceder al aplicativo ingresar al localhost:80 que es servido por nginix.
+La aplicación está compuesta por tres servicios:
+
+- PostgreSQL: base de datos.
+- Spring Boot: backend REST.
+- React + Nginx: frontend.
+
+## Requisitos
+
+- Docker
+- Docker Compose
+
+## Configuración
+
+Crear un archivo `.env` en la raíz del proyecto:
+
+```env
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+BACKEND_PORT=8085
+FRONTEND_PORT=80
+
+APP_SECURITY_SECRETKEY=change_me
+```
+
+Para ejecutar:
+
+En la terminal en la ruta base ejecutar `docker compose up` esperar a que carge e ingresar en http://localhost:80/ para acceder a la aplicación y empezar a usarla.

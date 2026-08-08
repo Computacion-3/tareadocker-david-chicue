@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/activities/999999"
+method: PUT
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: |-
+    {
+      "name": "Yoga Class Updated",
+      "description": "Evening yoga session",
+      "duration": 90,
+      "spaceId": {{spaceActivityId}},
+      "scheduleId": {{scheduleId}}
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status 404 for non-existent resource", function () {
+          pm.response.to.have.status(404);
+      });
+      pm.test("Error message mentions not found", function () {
+          pm.expect(pm.response.json().message).to.include("not found");
+      });
+    language: text/javascript
+order: 6000

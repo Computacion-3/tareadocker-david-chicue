@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/roles"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"TEST_ROLE\",\r
+
+    \  \"policyIds\": [1, 2]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status 400 for duplicate role name\", function () {\r
+
+      \    pm.expect(pm.response.code).to.be.oneOf([400, 409, 500]);\r
+
+      });"
+    language: text/javascript
+order: 3000

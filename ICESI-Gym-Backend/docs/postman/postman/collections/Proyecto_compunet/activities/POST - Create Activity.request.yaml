@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/activities"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+body:
+  type: json
+  content: |-
+    {
+      "name": "Yoga Class",
+      "description": "Morning yoga session",
+      "duration": 60,
+      "spaceId": {{spaceActivityId}},
+      "scheduleId": {{scheduleId}}
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+      pm.test("Response is not null", function () {
+          pm.expect(pm.response.json()).to.not.be.null;
+      });
+      pm.test("Response has idActivity", function () {
+          var d = pm.response.json();
+          pm.expect(d.idActivity).to.not.be.null;
+          pm.expect(d.idActivity).to.not.be.undefined;
+      });
+      var d = pm.response.json();
+      if (d.idActivity) { pm.environment.set("activityId", d.idActivity); }
+    language: text/javascript
+order: 4000

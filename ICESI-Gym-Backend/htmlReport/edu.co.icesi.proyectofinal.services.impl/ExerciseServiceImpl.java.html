@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExerciseServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proyectoFinal</a> &gt; <a href="index.source.html" class="el_package">edu.co.icesi.proyectofinal.services.impl</a> &gt; <span class="el_source">ExerciseServiceImpl.java</span></div><h1>ExerciseServiceImpl.java</h1><pre class="source lang-java linenums">package edu.co.icesi.proyectofinal.services.impl;
+
+import edu.co.icesi.proyectofinal.entity.Exercise;
+import edu.co.icesi.proyectofinal.repository.ExerciseRepository;
+import edu.co.icesi.proyectofinal.services.ExerciseService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ExerciseServiceImpl implements ExerciseService {
+
+    private final ExerciseRepository exerciseRepository;
+
+<span class="fc" id="L15">    public ExerciseServiceImpl(ExerciseRepository exerciseRepository) {</span>
+<span class="fc" id="L16">        this.exerciseRepository = exerciseRepository;</span>
+<span class="fc" id="L17">    }</span>
+
+    @Override
+    public List&lt;Exercise&gt; findAll() {
+<span class="fc" id="L21">        return exerciseRepository.findAll();</span>
+    }
+
+    @Override
+    public Exercise getExerciseById(Integer id) {
+<span class="fc" id="L26">        return exerciseRepository.findById(id)</span>
+<span class="fc" id="L27">                .orElseThrow(() -&gt; new RuntimeException(&quot;Exercise with id &quot; + id + &quot; not found&quot;));</span>
+    }
+
+    @Override
+    public Exercise saveExercise(Exercise exercise) {
+<span class="fc" id="L32">        return exerciseRepository.save(exercise);</span>
+    }
+
+    @Override
+    public Exercise updateExercise(Exercise exercise) {
+<span class="fc" id="L37">        Exercise existing = exerciseRepository.findById(exercise.getIdExercise())</span>
+<span class="fc" id="L38">                .orElseThrow(() -&gt; new RuntimeException(&quot;Exercise with id &quot; + exercise.getIdExercise() + &quot; not found&quot;));</span>
+<span class="fc" id="L39">        existing.setName(exercise.getName());</span>
+<span class="fc" id="L40">        existing.setType(exercise.getType());</span>
+<span class="fc" id="L41">        existing.setDescription(exercise.getDescription());</span>
+<span class="fc" id="L42">        existing.setDurationMin(exercise.getDurationMin());</span>
+<span class="fc" id="L43">        existing.setDifficulty(exercise.getDifficulty());</span>
+<span class="fc" id="L44">        existing.setVideoUrl(exercise.getVideoUrl());</span>
+<span class="fc" id="L45">        existing.setPredefined(exercise.isPredefined());</span>
+<span class="fc" id="L46">        existing.setUserExercise(exercise.getUserExercise());</span>
+<span class="fc" id="L47">        return exerciseRepository.save(existing);</span>
+    }
+
+    @Override
+    public void deleteExercise(Integer id) {
+<span class="fc" id="L52">        exerciseRepository.deleteById(id);</span>
+<span class="fc" id="L53">    }</span>
+
+    @Override
+    public List&lt;Exercise&gt; findByType(String type) {
+<span class="fc" id="L57">        return exerciseRepository.findByType(type);</span>
+    }
+
+    @Override
+    public List&lt;Exercise&gt; findByDifficulty(String difficulty) {
+<span class="fc" id="L62">        return exerciseRepository.findByDifficulty(difficulty);</span>
+    }
+
+    @Override
+    public List&lt;Exercise&gt; findPredefined() {
+<span class="fc" id="L67">        return exerciseRepository.findByIsPredefined(true);</span>
+    }
+
+    @Override
+    public List&lt;Exercise&gt; findByUserId(Integer userId) {
+<span class="fc" id="L72">        return exerciseRepository.findByUserExerciseIdUser(userId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
