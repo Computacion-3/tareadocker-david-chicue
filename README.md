@@ -31,6 +31,46 @@ FRONTEND_PORT=80
 APP_SECURITY_SECRETKEY=change_me
 ```
 
-Para ejecutar:
+## Construcción de las imágenes
 
-En la terminal en la ruta base ejecutar `docker compose up` esperar a que carge e ingresar en http://localhost:80/ para acceder a la aplicación y empezar a usarla.
+Desde la raíz del proyecto ejecutar:
+
+`docker compose build`
+
+También es posible construir y levantar los servicios directamente:
+
+`docker compose up --build`
+
+Ejecución
+
+`docker compose up`
+
+Para ejecutar los contenedores en segundo plano:
+
+`docker compose up -d`
+
+Servicios
+
+**Frontend**: Punto de entrada de la aplicación como tal
+
+http://localhost:80/
+
+**Backend**: Servicio con conexión directa a la BD Pgsql y con utilidad de SpringMVC para manejo administrativo.
+
+http://localhost:8085/
+
+**PostgreSQL**
+
+Sirviendo de forma externa http://localhost:5440
+
+Dentro de la red Docker, el backend accede a PostgreSQL mediante: `postgres:5432`
+
+## Detener la aplicación
+
+`docker compose down`
+
+Para eliminar también el volumen de PostgreSQL:
+
+`docker compose down -v`
+
+Advertencia: eliminar el volumen borra los datos almacenados de PostgreSQL.
