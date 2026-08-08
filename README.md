@@ -18,7 +18,7 @@ La aplicación está compuesta por tres servicios:
 
 ## Configuración
 
-Crear un archivo `.env` en la raíz del proyecto:
+Crear un archivo `.env` o usa el que viene en el repositorio, todo funciona en local(No interactua con la app real puesto que se encuentra desplega en un BaaS inaccesible así que con confianza) en la raíz del proyecto:
 
 ```env
 POSTGRES_DB=postgres
